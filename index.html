@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>laba 5</title>
+</head>
+<body>
+    <h1>Array</h1>
+    <div id="array">
+        <script>
+            var arr = [];
+            var i = 0;
+            var request = new XMLHttpRequest();
+            request.open("GET", "http://localhost/laba_5/get_item.php?index="+i, false);
+            request.send();
+            while (request.status == 200) {
+                arr[i] = Number(request.responseText);
+                i++;
+                request.open("GET", "http://localhost/laba_5/get_item.php?index="+i, false);
+                request.send();
+            }
+
+            document.getElementById("array").innerHTML = arr;
+
+
+           function sort() {
+               var i, j;
+               for (i = 0; i < arr.length - 1; i++) {
+                   for (j = 0; j < arr.length - i - 1; j++) {
+                       if (arr[j] > arr[j + 1]) {
+                           var temp = arr[j];
+                           arr[j] = arr[j + 1];
+                           arr[j + 1] = temp;
+                           swap(j, j + 1);
+                       }
+                   }
+               }
+               document.getElementById("array").innerHTML = arr;
+           }
+
+
+            function swap(index1, index2){
+                var request = new XMLHttpRequest();
+                request.open("GET", "http://localhost/laba_5/swap_item.php?index1="+index1+"&index2="+index2, false);
+                request.send();
+            }
+
+            function mix() {
+                var j, x, i;
+                for (i = arr.length - 1; i > 0; i--) {
+                    j = Math.floor(Math.random() * (i + 1));
+                    x = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = x;
+                    swap(i, j);
+                }
+                document.getElementById("array").innerHTML = arr;
+            }
+
+            function reset() {
+                var request = new XMLHttpRequest();
+                request.open("GET", "http://localhost/laba_5/reset.php", false);
+                request.send();
+                location.reload();
+            }
+
+        </script>
+    </div>
+
+    <button id="sort" onclick="sort()">Sort</button>
+    <button id="mix" onclick="mix()">Mix</button>
+    <button id="reset" onclick="reset()">Reset</button>
+</body>
+</html>
